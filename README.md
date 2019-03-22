@@ -1,0 +1,2 @@
+# HP_Serialized_Part
+HP_Serialized_Parts

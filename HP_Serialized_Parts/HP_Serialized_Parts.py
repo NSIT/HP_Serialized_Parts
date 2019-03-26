@@ -1,8 +1,11 @@
-import sys
-import smtplib
-from email.message import EmailMessage
-from email.headerregistry import Address
-import logging
+import  sys
+import  smtplib
+from    email.message import EmailMessage
+from    email.headerregistry import Address
+import  logging
+import  time
+import re
+import panda as pd
 
 def send_email(subject,content,to):
     msg = EmailMessage()
@@ -18,14 +21,22 @@ def send_email(subject,content,to):
 if __name__ == '__main__':
 
     try:
-        subject=sys.argv[2] 
-        files=sys.argv[4] 
-        sender=sys.argv[6]
+        #subject=sys.argv[2] 
+        #files=sys.argv[4] 
+        #sender=sys.argv[6]
 
-        content = ' \n The args past in are: \n {}'.format(the_args)
-        subject = subject
+        #mfr= re.search("mfr='([a-z0-9]+)'",subject,re.RegexFlag.IGNORECASE).group(1)
+
+        parts=pd.read_excel(" C:/Users/Public/ScheduledScripts/Imap_Monitor/email_downloads/038/20190326T150237/HP Serialized Parts List.xlsx",'parts',header=False)
+        
+
+        content = ' \n The args past in are: \n {}'.format(parts.head())
+        subject = "None"
         to = "yunior.rosellruiz@insight.com"
+        send_email(subject,content,to)
+                   
     except Exception as e:
         logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-        logging.warning(obj.params["reseller_name"]+" : "+ str(material) + " : "+  str(e))
+        logging.warning(str(e))
+        
 

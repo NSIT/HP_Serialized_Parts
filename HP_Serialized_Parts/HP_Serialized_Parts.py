@@ -3,10 +3,9 @@ import  logging
 import  time
 import  re
 import  pandas as pd
-from    sqlalchemy import create_engine
 import  smtplib
 from    email.message import EmailMessage
-from email.mime.multipart import MIMEMultipart
+from    email.mime.multipart import MIMEMultipart
 from    email.headerregistry import Address
 import  mimetypes
 from    email.mime.audio import MIMEAudio
@@ -15,10 +14,7 @@ from    email.mime.image import MIMEImage
 from    email.mime.text import MIMEText
 from    email import encoders
 
-#connect to SQL
-engine=create_engine("mssql+pyodbc://@WrkDSN")
-table_name='HP_Serialized_Parts'
-output_file="result.csv"
+
 
 def send_email(subject,content,to,files):
     msg = MIMEMultipart()

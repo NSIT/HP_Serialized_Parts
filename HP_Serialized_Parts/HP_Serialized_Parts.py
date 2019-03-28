@@ -14,7 +14,7 @@ from    email.mime.base import MIMEBase
 from    email.mime.image import MIMEImage
 from    email.mime.text import MIMEText
 from    email import encoders
-import  config
+from    config import *
 
 
 def send_email(subject,content,to,files):
@@ -24,10 +24,11 @@ def send_email(subject,content,to,files):
     msg['From'] = "do_not_reply@insight.com" #Address("Do Not Reply", "do_not_reply", "insight.com")
     msg['To'] =   to
     msg.attach(MIMEText(content))
-    for f in files:
-        a=attachment(f)
-        msg.attach(a)
-    s = smtplib.SMTP('mailna.insight.com')
+    if files is not None:
+        for f in files:
+            a=attachment(f)
+            msg.attach(a)
+        s = smtplib.SMTP('mailna.insight.com')
     s.send_message(msg)
     s.quit()
     return 
@@ -69,8 +70,14 @@ if __name__ == '__main__':
     files=sys.argv[4] 
     sender=sys.argv[6]
 
+    ##testing
+    #subject='None'
+    #files=r'\\insight.com\team\finance\Business Intelligence\Working Folders\Yunior\HP Serialized Parts List.xlsx'
+    #sender='yunior.rosellruiz@insight.com'
+    #mfr='0007081792'
+
     try:
-        mfr= re.search("mfr=('[a-z0-9]+')",subject,re.RegexFlag.IGNORECASE).group(1)
+        #mfr= re.search("mfr=('[a-z0-9]+')",subject,re.RegexFlag.IGNORECASE).group(1)
 
         #Read file from email
         parts:pd.DataFrame=pd.read_excel(files,'parts',index_col=False)
@@ -84,8 +91,8 @@ if __name__ == '__main__':
         result= pd.read_sql_query(sql=query,con=engine)
         result.to_csv(output_file)
         
-        content = str(files)
-        subject = "Please see attached"
+        content = "Please see attached"
+        subject = "HP_Serialized_Parts"
         to = sender
         send_email(subject,content,to,(output_file,))
 

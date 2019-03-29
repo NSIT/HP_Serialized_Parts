@@ -15,6 +15,7 @@ from    email.mime.image import MIMEImage
 from    email.mime.text import MIMEText
 from    email import encoders
 from    config import *
+from    sqlalchemy import create_engine
 
 
 def send_email(subject,content,to,files):
@@ -28,7 +29,7 @@ def send_email(subject,content,to,files):
         for f in files:
             a=attachment(f)
             msg.attach(a)
-        s = smtplib.SMTP('mailna.insight.com')
+    s = smtplib.SMTP('mailna.insight.com')
     s.send_message(msg)
     s.quit()
     return 
@@ -74,10 +75,10 @@ if __name__ == '__main__':
     #subject='None'
     #files=r'\\insight.com\team\finance\Business Intelligence\Working Folders\Yunior\HP Serialized Parts List.xlsx'
     #sender='yunior.rosellruiz@insight.com'
-    #mfr='0007081792'
+    #mfr="0007081792"
 
     try:
-        #mfr= re.search("mfr=('[a-z0-9]+')",subject,re.RegexFlag.IGNORECASE).group(1)
+        mfr= re.search("mfr=('[a-z0-9]+')",subject,re.RegexFlag.IGNORECASE).group(1)
 
         #Read file from email
         parts:pd.DataFrame=pd.read_excel(files,'parts',index_col=False)
@@ -101,10 +102,10 @@ if __name__ == '__main__':
         logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
         logging.warning(str(e))
 
-        content = "Something went wrong, please reach out to the BI Team\n{}".format(str(e))
-        subject = "Error"
-        to = sender
-        send_email(subject,content,to,None)
+    content = "Something went wrong, please reach out to the BI Team\n{}".format(str(e))
+    subject = "Error"
+    to = sender
+    send_email(subject,content,to,None)
 
 
 
